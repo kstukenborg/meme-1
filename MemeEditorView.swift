@@ -33,50 +33,47 @@ class MemeEditorView: UIViewController, UIImagePickerControllerDelegate, UINavig
         // NSStrokeWidthAttributeName : 0
     ]
     override func viewDidLoad() {
-
         super.viewDidLoad()
         tabBarController?.tabBar.hidden = true
-
-         didEdit  = false
+        didEdit  = false
         let navigationController = UINavigationController()
         navigationController.delegate = self
-        
-        
-        topTextField.delegate = self
-        bottomTextField.delegate = self
         shareOutlet.enabled = false
-        setTextFieldAttributes(topTextField)
-        setTextFieldAttributes(bottomTextField)
-        topTextField.text = "TOP"
-        bottomTextField.text  = "BOTTOM"
+        setTextFieldAttributes(topTextField, text: "TOP")
+        setTextFieldAttributes(bottomTextField,text: "BOTTOM")
         takePictureOutlet.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
-        
         self.navigationController?.view.backgroundColor = UIColor.blackColor()
         self.dismissViewControllerAnimated(true, completion: nil)
-        topTextField.enabled = false
-        bottomTextField.enabled = false
-        
     }
-    func setTextFieldAttributes (textField: UITextField){
+    
+    // TextAttributes and TextField delegates
+    
+    
+    func setTextFieldAttributes (textField: UITextField, text: String){
+        textField.delegate = self
+        textField.text = text
+        textField.enabled = false
         textField.defaultTextAttributes = memeTextAttributes
         textField.textAlignment = NSTextAlignment.Center
         textField.autocapitalizationType = UITextAutocapitalizationType.AllCharacters
         textField.backgroundColor = UIColor.clearColor()
-
-        
-        
     }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
         subscribeToKeyboardNotifications()
         navigationController?.toolbarHidden = false
         tabBarController?.tabBar.hidden = true
         //Shift the toolbar  by the amount of the
         // tabBarController so that it lies at the bottom of the
         //view.
-        navigationController?.toolbar.layer.position.y = (navigationController?.toolbar.layer.position.y)! + (tabBarController?.tabBar.bounds.height)!
-
-
+        
+        //navigationController?.toolbar.layer.position.y = (navigationController?.toolbar.layer.position.y)! + (tabBarController?.tabBar.bounds.height)!
+        
+        self.navigationController?.setToolbarHidden(false, animated: true)
+        
+        
         dismissViewControllerAnimated(true, completion: nil)
         if didEdit {
             didEdit = false
@@ -84,6 +81,7 @@ class MemeEditorView: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
+    //Keyboard Notifications
     
     /*
      This function allows us to get notifications on the status of the keyboard.
@@ -133,25 +131,24 @@ class MemeEditorView: UIViewController, UIImagePickerControllerDelegate, UINavig
      This function allows us to take a picture to be used in the meme.
      */
     @IBAction func takeAPictureUsingCamera(sender: AnyObject) {
-        topTextField.enabled = true
-        bottomTextField.enabled = true
-        let imagePickerController = UIImagePickerController()
-        imagePickerController.delegate = self
-        imagePickerController.sourceType = UIImagePickerControllerSourceType.Camera
-        
-        presentViewController(imagePickerController, animated: true, completion: nil)
+        presentImagePicker(.Camera)
     }
     /*
      This function allows the user to pick a picture from the pictures in albums.
      */
     
     @IBAction func pickAnImage(sender: AnyObject) {
+        //presentImagePicker(UIImagePickerControllerSourceType.PhotoLibrary)
+        presentImagePicker(.PhotoLibrary)
+    }
+    
+    func presentImagePicker(sourceType: UIImagePickerControllerSourceType) {
         topTextField.enabled = true
         bottomTextField.enabled = true
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         presentViewController(imagePickerController, animated: true, completion: nil)
-        navigationController?.toolbar.layer.position.y = (navigationController?.toolbar.layer.position.y)! + (tabBarController?.tabBar.bounds.height)!
+        imagePickerController.sourceType = sourceType
     }
     
     /*
@@ -159,18 +156,18 @@ class MemeEditorView: UIViewController, UIImagePickerControllerDelegate, UINavig
      */
     func imagePickerController( _picker: UIImagePickerController,
                                 didFinishPickingMediaWithInfo info: [String : AnyObject]){
+        
+        navigationController?.toolbar.layer.position.y = (navigationController?.toolbar.layer.position.y)! + (tabBarController?.tabBar.bounds.height)!
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage  {
             pictureDisplayed.image = image
+            pictureDisplayed.contentMode = .ScaleAspectFit
         }
         shareOutlet.enabled = true
         dismissViewControllerAnimated(true, completion:nil)
-        navigationController?.toolbar.layer.position.y = (navigationController?.toolbar.layer.position.y)! + (tabBarController?.tabBar.bounds.height)!
-        
     }
     
     func imagePickerControllerDidCancel( _picker: UIImagePickerController){
         dismissViewControllerAnimated(true, completion:nil)
-        navigationController?.toolbar.layer.position.y = (navigationController?.toolbar.layer.position.y)! + (tabBarController?.tabBar.bounds.height)!
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -194,22 +191,20 @@ class MemeEditorView: UIViewController, UIImagePickerControllerDelegate, UINavig
      This function creates an object meme and then saves in into the memes structure.
      */
     func save() {
-        
         let meme = Meme( topText: topTextField.text!,  bottomText: bottomTextField.text!,originalImage:
             pictureDisplayed.image!, memedImage: generateMemedImage())
         (UIApplication.sharedApplication().delegate as! AppDelegate).memes.append(meme)
     }
+    
     /*
      This function creates the memedImage.
      */
     func generateMemedImage() -> UIImage
     {
-        navigationController?.toolbarHidden = true
-        navigationController?.navigationBarHidden = true
         // Render view to an image
         UIGraphicsBeginImageContext(view.frame.size)
         view.drawViewHierarchyInRect(view.frame,
-                                          afterScreenUpdates: true)
+                                     afterScreenUpdates: true)
         let memedImage : UIImage =
             UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -232,11 +227,9 @@ class MemeEditorView: UIViewController, UIImagePickerControllerDelegate, UINavig
         activityVC.completionWithItemsHandler = {
             (activity, success, items, error) in
             if success {
-               
                 // call save to save the meme in an array.
                 self.save()
                 self.navigationController?.popToRootViewControllerAnimated(true)
-
             }
         }
     }

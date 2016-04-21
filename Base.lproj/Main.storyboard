@@ -24,13 +24,15 @@
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Tjr-Kr-iJP">
                                             <rect key="frame" x="0.0" y="-17" width="134" height="164"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="134" id="7Nt-Qk-f4A"/>
+                                                <constraint firstAttribute="height" constant="164" id="MaZ-0c-t52"/>
+                                            </constraints>
                                         </imageView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="Tjr-Kr-iJP" firstAttribute="leading" secondItem="XTg-Aw-Tf9" secondAttribute="leadingMargin" constant="-8" id="DRN-ez-VI0"/>
-                                        <constraint firstItem="Tjr-Kr-iJP" firstAttribute="top" secondItem="XTg-Aw-Tf9" secondAttribute="topMargin" constant="-25" id="QtF-mG-mMd"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="Tjr-Kr-iJP" secondAttribute="bottom" constant="-24" id="jwg-NG-V8d"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="Tjr-Kr-iJP" secondAttribute="trailing" constant="272" id="mME-MP-bvz"/>
+                                        <constraint firstItem="Tjr-Kr-iJP" firstAttribute="centerY" secondItem="XTg-Aw-Tf9" secondAttribute="centerY" id="uwJ-L4-jVY"/>
+                                        <constraint firstItem="Tjr-Kr-iJP" firstAttribute="leading" secondItem="XTg-Aw-Tf9" secondAttribute="leading" id="yJu-yi-Eag"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -64,7 +66,7 @@
         <!--Meme Editor View-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="MemeEditorView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="MemeEditorView" customModule="memekss" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MemeEditorView" autoresizesArchivedViewToFullSize="NO" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="MemeEditorView" customModule="memekss" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -104,19 +106,17 @@
                         </constraints>
                     </view>
                     <toolbarItems>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="zCk-B4-ak7"/>
-                        <barButtonItem systemItem="camera" id="wBc-ow-3Af">
+                        <barButtonItem image="Camera-50.png" width="148" id="n2T-Pm-blV">
                             <connections>
-                                <action selector="takeAPictureUsingCamera:" destination="BYZ-38-t0r" id="gkD-N6-8SG"/>
+                                <action selector="takeAPictureUsingCamera:" destination="BYZ-38-t0r" id="FLb-jg-Urf"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem width="80" style="plain" systemItem="fixedSpace" id="Czf-ba-f4b"/>
-                        <barButtonItem title="Album" id="nTi-da-KVc">
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="eSU-Cm-C9B"/>
+                        <barButtonItem title="Album" width="106" id="hBw-SK-2KJ">
                             <connections>
-                                <action selector="pickAnImage:" destination="BYZ-38-t0r" id="l15-HA-e0z"/>
+                                <action selector="pickAnImage:" destination="BYZ-38-t0r" id="dpv-QM-Zmh"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="dMT-kk-3yM"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="Mzn-7H-fBQ">
                         <barButtonItem key="leftBarButtonItem" systemItem="action" id="nlH-QG-FFz">
@@ -136,7 +136,7 @@
                         <outlet property="bottomTextField" destination="eG8-7n-6ZL" id="ZfD-MH-a7r"/>
                         <outlet property="pictureDisplayed" destination="hLy-Lj-YZo" id="Z3v-ie-Vum"/>
                         <outlet property="shareOutlet" destination="nlH-QG-FFz" id="U3x-4W-Wmw"/>
-                        <outlet property="takePictureOutlet" destination="wBc-ow-3Af" id="wH2-rf-d5t"/>
+                        <outlet property="takePictureOutlet" destination="n2T-Pm-blV" id="rgy-K8-tbH"/>
                         <outlet property="topTextField" destination="uUQ-7A-KjR" id="hzY-cX-uog"/>
                     </connections>
                 </viewController>
@@ -239,32 +239,12 @@
                                     <rect key="frame" x="0.0" y="0.0" width="137" height="143"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Joq-mD-slx">
-                                            <rect key="frame" x="8" y="14" width="129" height="109"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oCc-c3-jo7">
-                                                    <rect key="frame" x="0.0" y="0.0" width="129" height="109"/>
-                                                </imageView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="oCc-c3-jo7" firstAttribute="leading" secondItem="Joq-mD-slx" secondAttribute="leading" id="Dgh-yY-yL7"/>
-                                                <constraint firstItem="oCc-c3-jo7" firstAttribute="top" secondItem="Joq-mD-slx" secondAttribute="top" id="iiT-Te-8Cw"/>
-                                                <constraint firstAttribute="trailing" secondItem="oCc-c3-jo7" secondAttribute="trailing" id="tzk-OB-LW8"/>
-                                                <constraint firstAttribute="bottom" secondItem="oCc-c3-jo7" secondAttribute="bottom" id="umS-XM-pkI"/>
-                                            </constraints>
-                                        </stackView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eSy-Zv-LuS">
+                                            <rect key="frame" x="0.0" y="-1" width="145" height="146"/>
+                                        </imageView>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
-                                <constraints>
-                                    <constraint firstAttribute="bottomMargin" secondItem="Joq-mD-slx" secondAttribute="bottom" constant="12" id="Obw-JU-l0J"/>
-                                    <constraint firstItem="Joq-mD-slx" firstAttribute="leading" secondItem="s0C-ba-BYa" secondAttribute="leadingMargin" id="ViS-dB-6yX"/>
-                                    <constraint firstItem="Joq-mD-slx" firstAttribute="top" secondItem="s0C-ba-BYa" secondAttribute="topMargin" constant="6" id="bWR-c1-iqG"/>
-                                    <constraint firstAttribute="trailingMargin" secondItem="Joq-mD-slx" secondAttribute="trailing" constant="-8" id="kW0-LV-O93"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="memeImage" destination="oCc-c3-jo7" id="qRz-1Z-Flb"/>
-                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -314,11 +294,12 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Camera-50.png" width="50" height="50"/>
         <image name="collection" width="30" height="30"/>
         <image name="table" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="QpG-ge-vbO"/>
         <segue reference="inY-dE-jqB"/>
+        <segue reference="QpG-ge-vbO"/>
     </inferredMetricsTieBreakers>
 </document>
